@@ -1,21 +1,13 @@
-import React from 'react';
-import Chip from '@material-ui/core/Chip';
+import React, {Component} from 'react';
+import {Button, Checkbox, FormLabel, FormGroup, FormControl, FormControlLabel, FormHelperText,
+TextField, Container} from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 1000,
-    '& > * + *': {
-      marginTop: theme.spacing(3),
-    },
-  },
-}));
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films =
-[
+
+const brokersList = [
 	'Abel Noser, LLC',
 	'ACS Execution Services, LLC (Global Liquidity Partners)',
 	'Allen & Company LLC',
@@ -140,30 +132,85 @@ const top100Films =
 	'TRAFiX'
 	]
 
+	const useStyles = makeStyles(theme => ({
+	  root: {
+	    display: 'flex',
+	  },
+	  formControl: {
+	    margin: theme.spacing(3),
+	  },
+    }));
+    
+    const checkBoxStyling = makeStyles({
+        root: {
+          background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+          borderRadius: 3,
+          border: 0,
+          color: 'white',
+          height: 48,
+          padding: '0 30px',
+          boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        },
+        label: {
+          textTransform: 'capitalize',
+        },
+      });
 
-export default function Tags() {
-  const classes = useStyles();
+	export default function CheckboxesGroup() {
+      const classes = useStyles();
+      const checkBoxClasses = checkBoxStyling();
+	  // const [state, setState] = React.useState({
+	  //   gilad: true,
+	  //   jason: false,
+	  //   antoine: false,
+	  // });
 
-  return (
-    <div className={classes.root}>
-      <Autocomplete
-        multiple
-        id="tags-standard"
-        options={top100Films}
-        getOptionLabel={(option) => option}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="Brokers"
-            placeholder="i.e. Two Sigma"
-          />
-        )}
-      />
-     
-       
-      
-    </div>
-  );
-}
+	  // const handleChange = name => event => {
+	  //   setState({ ...state, [name]: event.target.checked });
+	  // };
 
+	  // const { gilad, jason, antoine } = state;
+	  // const error = [gilad, jason, antoine].filter(v => v).length !== 2;
+
+	  return (
+	  	<React.Fragment>
+          <CssBaseline />
+          <Container fixed>
+		    <div className={classes.root} style={{ backgroundColor: '#F4F2F4', width: '50vw' }}>
+		      <FormControl component="fieldset" className={classes.formControl}>
+		        <FormLabel component="legend" size= "large">List of Brokers</FormLabel>
+		        <Autocomplete
+			      id="combo-box-demo"
+			      options={brokersList}
+			      getOptionLabel={option => option}
+			      renderInput={params => (
+			        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
+			      )}
+	   			 />
+		        <FormGroup>
+		        		{
+							brokersList.map((e) => { 
+								return (
+								<FormControlLabel
+                                style={{ color:"#060A28"}}
+						            control={<Checkbox 
+						            	checkBoxClasses = {{
+                                            root: checkBoxClasses.root,
+                                            label: checkBoxClasses.label
+                                        }}
+                                        
+						            	/>}
+						            label={e}/>
+								 )
+							}
+								)
+						}
+		        </FormGroup>
+		      </FormControl>
+		    </div>
+            </Container>
+    </React.Fragment>
+	  );
+	}
+
+	

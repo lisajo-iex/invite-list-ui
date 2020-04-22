@@ -1,21 +1,10 @@
-import React from 'react';
-import Chip from '@material-ui/core/Chip';
+import React, { memo, useState } from "react";
+import {Button, Checkbox, FormLabel, FormGroup, FormControl, FormControlLabel, FormHelperText,
+    TextField,Paper, Grid } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 1000,
-    '& > * + *': {
-      marginTop: theme.spacing(3),
-    },
-  },
-}));
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films =
-[
+const brokersList = [
 	'Abel Noser, LLC',
 	'ACS Execution Services, LLC (Global Liquidity Partners)',
 	'Allen & Company LLC',
@@ -138,32 +127,79 @@ const top100Films =
 	'SS&C MarketTrader',
 	'Takion Technologies',
 	'TRAFiX'
-	]
+    ]
 
+const AddTodo = memo((props, test )=> {
+    const [val,setVal]=useState({})
+    const handleClick = () => {
+        setVal(brokersList[0]);//you pass any value from the array of top100Films
+       // set value in TextField from dropdown list
+     };
+     const newVal = (event, value) => {
+         console.log(value)
+         return value
+     }
+    console.log(props.inputValue)
+    return (
+  <Paper style={{ margin: 16, padding: 16 }}>
+    <Grid container>
+      <Grid xs={10} md={11} item style={{ paddingRight: 16 }}>
+        <TextField
+          placeholder="Add Todo here"
+          value={newVal}
+          onChange={props.onInputChange}
+          onKeyPress={props.onInputKeyPress}
+          fullWidth
+        />
+        {/* <Autocomplete
+            id="combo-box-demo"
+            options={brokersList}
+            getOptionLabel={option => option}
+            style={{ width: 300 }}
+            onInputChange={handleInputChange}
+            onChange= {handleInputChange}
+            onKeyPress={props.onInputKeyPress}
+            renderInput={(params, passDown) => (
+            <TextField {...params} 
+            // value={handleInputChange}
+           // onChange={props.onInputChange}
+            onKeyPress={props.onInputKeyPress}
+            label="Combo box" 
+            variant="outlined" fullWidth />
+            )}
+	   	/> */}
 
-export default function Tags() {
-  const classes = useStyles();
+        <Autocomplete
+        // value={val}
+            options={brokersList}
+            getOptionLabel={option => option}
+            style={{ width: 300 }}
+            onChange = {newVal} 
+            value= {newVal}
+            renderInput={params => (
+            <TextField
+                {...params}
+                label="Combo box"
+                variant="outlined"
+                fullWidth
 
-  return (
-    <div className={classes.root}>
-      <Autocomplete
-        multiple
-        id="tags-standard"
-        options={top100Films}
-        getOptionLabel={(option) => option}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="Brokers"
-            placeholder="i.e. Two Sigma"
-          />
-        )}
-      />
-     
-       
-      
-    </div>
-  );
-}
+            />
+            )}
+        />
 
+      </Grid>
+      <Grid xs={2} md={1} item>
+        <Button
+          fullWidth
+          color="secondary"
+          variant="outlined"
+          onClick={props.onButtonClick}
+        >
+          Add
+        </Button>
+      </Grid>
+    </Grid>
+  </Paper>
+)});
+
+export default AddTodo;
